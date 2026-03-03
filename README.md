@@ -1,103 +1,110 @@
-🏠 Boston Housing Price Prediction (Linear Regression)
-📌 Project Overview
+# 🏠 Boston Housing Price Prediction (Linear Regression + Random Forest)
 
-This project builds a multiple linear regression model to predict median house prices (medv) using the Boston Housing dataset. The workflow covers data cleaning, exploratory data analysis (EDA), feature selection, model training, and evaluation to establish a strong baseline regression model.
+## 📌 Project Overview
 
-📂 Dataset
+This project builds and compares multiple regression models to predict median house prices (`MEDV`) using the Boston Housing dataset.  
 
-Name: Boston Housing Dataset
+The workflow includes:
 
-Target Variable: medv (Median house price in $1000s)
+- Data cleaning  
+- Exploratory Data Analysis (EDA)  
+- Feature selection  
+- Baseline Linear Regression modeling  
+- Random Forest modeling  
+- Hyperparameter tuning with GridSearchCV  
+- Model evaluation and comparison  
 
-Features: Socio-economic, environmental, and housing attributes such as:
+The goal was to establish a strong baseline model and then improve performance using nonlinear methods and hyperparameter optimization.
 
-rm (average number of rooms)
+---
 
-lstat (% lower status population)
+## 📂 Dataset
 
-ptratio (pupil–teacher ratio)
+- **Name:** Boston Housing Dataset  
+- **Target Variable:** `MEDV` (Median house price in $1000s)  
+- **Features:** Socio-economic, environmental, and housing attributes such as:
 
-nox (pollution level)
+  - `RM` – Average number of rooms  
+  - `LSTAT` – % lower status population  
+  - `PTRATIO` – Pupil–teacher ratio  
+  - `NOX` – Pollution level  
+  - `TAX` – Property tax rate  
+  - and others  
 
-tax (property tax rate)
+---
 
-and others
-
-🔍 Exploratory Data Analysis (EDA)
+## 🔍 Exploratory Data Analysis (EDA)
 
 Key EDA steps included:
 
-Univariate analysis: Distribution of individual features
+- **Univariate analysis** – Distribution of individual features  
+- **Bivariate analysis** – Relationship between key features and house prices  
+- **Multivariate analysis** – Correlation heatmap to identify
+- **Outlier analysis** – Identification using IQR method  
+- **Feature scaling** (for linear models)
 
-Bivariate analysis: Relationship between key features and house prices
+---
 
-Multivariate analysis: Correlation heatmap to identify important predictors and multicollinearity
+## 🧠 Models Implemented
 
-Outlier analysis: Identification of extreme values using the IQR method
+### 1️⃣ Multiple Linear Regression (Baseline)
 
-🧠 Model
+- Standard train/test split  
+- Missing value handling  
+- Outlier removal (IQR method for continuous variables)  
+- Feature scaling applied  
 
-Algorithm: Multiple Linear Regression
+#### 📊 Performance
 
-Train/Test Split: Standard hold-out split
+| Metric | Value |
+|--------|--------|
+| R² | ~0.70 |
+| Adjusted R² | ~0.62 |
+| RMSE | ~3.19 |
+| MAE | ~2.25 |
 
-Preprocessing:
+**Interpretation:**  
+The linear model explains ~70% of the variance in house prices. It provides a strong and interpretable baseline but is limited by linear assumptions and multicollinearity.
 
-Missing value handling
+---
 
-Outlier detection and removal using IQR (for continuous features, excluding medv and chas)
+### 2️⃣ Random Forest Regressor (Default)
 
-📊 Model Performance
-Metric	Value
-R² Score	~0.68
-Adjusted R²	~0.56
-MSE	~10.78
-RMSE	~3.28
-MAE	~2.30
+Tree-based model to capture nonlinear relationships and feature interactions.
 
-Interpretation:
-The model explains approximately 68% of the variance in house prices. On average, predictions deviate from actual prices by around $3,300, indicating strong baseline performance for a linear regression model on this dataset.
+#### 📊 Performance
 
-🧪 How to Run
+| Metric | Value |
+|--------|--------|
+| R² | ~0.73 |
+| RMSE | ~3.00 |
+| MAE | ~2.10 |
 
-Clone the repository
+**Improvement:**  
+Better performance than linear regression due to ability to model nonlinear patterns.
 
-git clone https://github.com/your-username/boston-housing-regression.git
-cd boston-housing-regression
+---
 
+### 3️⃣ Random Forest (Hyperparameter Tuned with GridSearchCV)
 
-Install dependencies
+Hyperparameters tuned:
 
-pip install -r requirements.txt
+- `n_estimators`
+- `max_depth`
+- `min_samples_split`
+- `min_samples_leaf`
+- `max_features`
 
+Cross-validation: **5-fold CV**  
+Scoring metric: **R²**
 
-Run the notebook
-Open the Jupyter notebook and run all cells to reproduce the analysis and results.
+#### ✅ Best Parameters Found
 
-📁 Project Structure
-.
-├── data/                  # (optional) dataset files
-├── notebooks/             # Jupyter notebooks with EDA & modeling
-├── README.md              # Project documentation
-├── requirements.txt       # Python dependencies
-└── results/               # (optional) figures, plots, metrics
-
-🚀 Future Improvements
-
-Apply regularized regression (Ridge, Lasso) to handle multicollinearity
-
-Try non-linear models (Random Forest, XGBoost)
-
-Perform feature engineering and transformations
-
-Cross-validation for more robust evaluation
-
-🙌 Acknowledgements
-
-Dataset: UCI / Scikit-learn Boston Housing dataset
-
-Libraries: NumPy, Pandas, Matplotlib, Seaborn, Scikit-learn
-
-📬 Contact
-
-If you have suggestions or feedback, feel free to open an issue or reach out!
+```python
+{
+ 'max_depth': 10,
+ 'max_features': 'sqrt',
+ 'min_samples_leaf': 1,
+ 'min_samples_split': 2,
+ 'n_estimators': 100
+}
